@@ -1,0 +1,18 @@
+{
+  "name": "nixos-config-webui-backend",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": ["nixos", "nix", "gui", "nixos-config", "webui", "apiserver"],
+  "author": "milahu",
+  "license": "CC0-1.0",
+  "dependencies": {
+    "express": "*",
+    "node-pty": "*",
+    "tree-sitter": "*",
+    "tree-sitter-nix": "github:cstrahan/tree-sitter-nix"
+  }
+}
