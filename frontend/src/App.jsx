@@ -21,6 +21,7 @@ import CodeMirror from "./solidjs-codemirror-component";
 //import MonacoEditor from "./solidjs-monaco-editor-component";
 //import TreeSitter from "./solidjs-treesitter-component";
 //import MonacoEditorTreeSitter from "./solidjs-monaco-editor-tree-sitter-component";
+import MonacoEditorLezerParser from "./solidjs-monaco-editor-lezer-parser-component";
 
 
 const backendUrl = 'http://localhost:8080';
@@ -533,16 +534,20 @@ https://golden-layout.github.io/golden-layout/frameworks/
           </Tabs>
         </LayoutItem>
         <LayoutItem>
-          <CodeMirror
+          <MonacoEditorLezerParser
             options={{
-              lineNumbers: true,
-              showCursorWhenSelecting: true,
-              //value: `if true then true else false`,
-              // FIXME editor is empty after page reload,
-              // but the correct value (configuration.nix)
-              // is loaded after hot reload
+              //url: "http://localhost:3000/foo.js",
+              // const model = () => mEditor.getModel(Uri.parse(finalProps.url));
               value: store.configText,
+              //value: `if true then true else false`,
+              language: `nix`,
+              //onDocChange: (newValue) => console.dir({ newValue }),
+              //isDark: true,
+
             }}
+            withMinimap={false}
+            isDark={true}
+            setTree={(tree) => setState('tree', tree)}
           />
         </LayoutItem>
       </LayoutRow>
@@ -567,6 +572,20 @@ https://golden-layout.github.io/golden-layout/frameworks/
             withMinimap={false}
             isDark={true}
             setTree={(tree) => setState('tree', tree)}
+          />
+        </LayoutItem>
+
+        <LayoutItem>
+          <CodeMirror
+            options={{
+              lineNumbers: true,
+              showCursorWhenSelecting: true,
+              //value: `if true then true else false`,
+              // FIXME editor is empty after page reload,
+              // but the correct value (configuration.nix)
+              // is loaded after hot reload
+              value: store.configText,
+            }}
           />
         </LayoutItem>
         */

@@ -18,6 +18,8 @@
     "@lezer/common": "^0.15.8",
     "codemirror": "^5.63.3",
     "lezer-parser-nix": "github:milahu/lezer-parser-nix",
+    "lodash.debounce": "^4.0.8",
+    "monaco-editor": "^0.30.1",
     "solid-blocks": "github:milahu/solid-blocks",
     "solid-styled-components": "^0.27.3",
     "solidjs-treeview-component": "github:milahu/solidjs-treeview-component",
@@ -28,7 +30,6 @@
   "_unused_devDependencies": {
     "ace": "^1.3.0",
     "golden-layout": "^2.4.0",
-    "monaco-editor": "^0.30.1",
     "monaco-tree-sitter": "github:milahu/monaco-tree-sitter",
     "tree-sitter-nix": "github:cstrahan/tree-sitter-nix",
     "vite-plugin-tree-sitter": "github:milahu/vite-plugin-tree-sitter",
