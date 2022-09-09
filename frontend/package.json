@@ -11,12 +11,11 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "monaco-editor": "^0.30.1",
-    "monaco-tree-sitter": "github:milahu/monaco-tree-sitter",
-    "tree-sitter-nix": "github:cstrahan/tree-sitter-nix",
-    "vite-plugin-tree-sitter": "github:milahu/vite-plugin-tree-sitter",
-    "web-tree-sitter": "^0.19.4",
+    "@codemirror/basic-setup": "^0.19.0",
+    "@codemirror/highlight": "^0.19.6",
+    "@codemirror/language": "^0.19.3",
     "@lezer/common": "^0.15.8",
+    "codemirror": "^5.63.3",
     "lezer-parser-nix": "github:milahu/lezer-parser-nix",
     "solid-blocks": "github:milahu/solid-blocks",
     "solid-styled-components": "^0.27.3",
@@ -26,12 +25,13 @@
     "vite-plugin-solid": "^2.0.3"
   },
   "_unused_devDependencies": {
-    "@codemirror/basic-setup": "^0.19.0",
-    "@codemirror/highlight": "^0.19.6",
-    "@codemirror/language": "^0.19.3",
-    "codemirror": "^5.63.3",
     "ace": "^1.3.0",
-    "golden-layout": "^2.4.0"
+    "golden-layout": "^2.4.0",
+    "monaco-editor": "^0.30.1",
+    "monaco-tree-sitter": "github:milahu/monaco-tree-sitter",
+    "tree-sitter-nix": "github:cstrahan/tree-sitter-nix",
+    "vite-plugin-tree-sitter": "github:milahu/vite-plugin-tree-sitter",
+    "web-tree-sitter": "^0.19.4"
   },
   "dependencies": {
     "solid-js": "^1.1.3"
