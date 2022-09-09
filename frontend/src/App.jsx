@@ -531,8 +531,20 @@ https://golden-layout.github.io/golden-layout/frameworks/
             <TabContainer>todo</TabContainer>
           </Tabs>
         </LayoutItem>
+        <LayoutItem>
+          <CodeMirror
+            options={{
+              lineNumbers: true,
+              showCursorWhenSelecting: true,
+              //value: `if true then true else false`,
+              // FIXME editor is empty after page reload,
+              // but the correct value (configuration.nix)
+              // is loaded after hot reload
+              value: store.configText,
+            }}
+          />
+        </LayoutItem>
       </LayoutRow>
-
     </div>
   );
 }
@@ -620,15 +632,6 @@ function Indent(props) {
 
         }}
       >hello world</MonacoEditor>
-      <h3>CodeMirror</h3>
-      <CodeMirror
-        options={{
-          lineNumbers: true,
-          showCursorWhenSelecting: true,
-          value: `if true then true else false`,
-        }}
-      />
-
 function App() {
   return (
     <div class={styles.App}>
