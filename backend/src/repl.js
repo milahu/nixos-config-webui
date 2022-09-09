@@ -1,3 +1,8 @@
+/*
+FIXME this breaks on parallel requests
+-> the requests hang forever
+https://stackoverflow.com/questions/22107144/node-js-express-and-parallel-queues
+*/
 
 const pseudoTerminal = require('node-pty');
 
@@ -9,12 +14,31 @@ module.exports = function addToApp(app) {
 
   // start nix repl
 
+  const nixReplEnv = { ...process.env };
+
+  const nixPath = Object.fromEntries((process.env.NIX_PATH || '').split(':').map(kv => {
+    const parts = kv.split('=');
+    if (parts.length == 1) {
+      return ['', parts[0]];
+    }
+    else {
+      return [parts[0], parts.slice(1).join('=')];
+    }
+  }));
+  console.dir({ nixPath }); // debug
+
+  if (!nixPath['nixos-config']) {
+    // workaround for missing nixos-config in $NIX_PATH
+    nixReplEnv.NIXOS_CONFIG = '/etc/nixos/configuration.nix';
+    console.log(`info: nixos-config is missing in $NIX_PATH. using default value ${nixReplEnv.NIXOS_CONFIG}`);
+  }
+
   const nixReplProcess = pseudoTerminal.spawn('nix', ['repl', '<nixpkgs/nixos>'], {
     name: 'xterm-color',
     cols: 80,
     rows: 40,
     //cwd: process.env.HOME,
-    //env: process.env
+    env: nixReplEnv,
   });
 
   nixReplProcess.onExit((code, signal) => {
@@ -94,7 +118,16 @@ module.exports = function addToApp(app) {
         const bodyEnd = replResponse.lastIndexOf(endToken)
         // TODO avoid the double-encoding of json as nix string -> get "raw output" of nix repl?
         const bodyJsonJson = replResponse.slice(bodyStart, bodyEnd);
-        const bodyJson = JSON.parse(bodyJsonJson);
+        let bodyJson = '';
+        try {
+          bodyJson = JSON.parse(bodyJsonJson);
+        }
+        catch (e) {
+          // json SyntaxError
+          console.log(`FIXME json SyntaxError. replResponse = ${replResponse}`)
+          bodyJson = ''
+          // TODO send http status != 200
+        }
         const bodyJsonStart = bodyJson.length < 80 ? bodyJson : `${bodyJson.slice(0, 76)} ...`;
         console.log(`> ${query.clientQuery}`)
         console.log(bodyJsonStart)

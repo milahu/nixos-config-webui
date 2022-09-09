@@ -6,10 +6,18 @@
   "scripts": {
     "start": "node src/index.js"
   },
-  "keywords": ["nixos", "nix", "gui", "nixos-config", "webui", "apiserver"],
+  "keywords": [
+    "nixos",
+    "nix",
+    "gui",
+    "nixos-config",
+    "webui",
+    "apiserver"
+  ],
   "author": "milahu",
   "license": "CC0-1.0",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "*",
     "node-pty": "*",
     "tree-sitter": "*",
