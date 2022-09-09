@@ -99,7 +99,8 @@ export default function App() {
     var response = await fetch(url);
     //if (!response.ok) { console.log(`http request error ${response.status}`); return; }
     var responseData = await response.text();
-    //console.log("loadConfig: responseData 1", responseData);
+    console.log("loadConfig: responseData 1, first 200 bytes:");
+    console.log(responseData.slice(0, 200));
     setStore('configText', responseData);
     //console.log("loadConfig: set store done 1");
 
