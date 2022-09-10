@@ -1,3 +1,6 @@
+// FIXME sometimes the layout is jumping until resize. blame monaco-editor?
+// monaco-editor seems too aggressive in taking width
+
 import logo from "./logo.svg";
 import styles from "./App.module.css";
 
@@ -14,20 +17,27 @@ import {SplitRoot, SplitY, SplitX, SplitItem} from './solidjs-resizable-splitter
 
 import { glob as globalStyle } from "solid-styled-components";
 
-
-//import TreeView from "solidjs-treeview-component";
-import FolderView from "./solidjs-folderview-component";
+// TODO FolderView -> TreeView
+//import TreeView from "./solidjs-treeview-component";
+//import FolderView from "./solidjs-folderview-component";
 //import SyntaxTreeView from "./solidjs-syntaxtreeview-component";
-import CodeMirror from "./solidjs-codemirror-component";
+
+// TODO remove. MonacoEditor is better than CodeMirror
+// TODO? https://github.com/nimeshnayaju/solid-codemirror
+//import CodeMirror from "./solidjs-codemirror-component";
 
 //import MonacoEditor from "./solidjs-monaco-editor-component";
 //import TreeSitter from "./solidjs-treesitter-component";
 //import MonacoEditorTreeSitter from "./solidjs-monaco-editor-tree-sitter-component";
-import MonacoEditorLezerParser from "./solidjs-monaco-editor-lezer-parser-component";
+import MonacoEditor from "./solidjs-monaco-editor-component";
+
+import { IterMode } from "@lezer/common";
+
+import NixEval from "./nix-eval-js";
+
 
 
 const backendUrl = 'http://localhost:8080';
-
 
 
 
@@ -517,26 +527,65 @@ https://golden-layout.github.io/golden-layout/frameworks/
   //const [tree, setTree] = createSignal();
   const [state, setState] = createStore();
 
+  const nixEval = new NixEval();
+
   return (
     <SplitRoot>
       <SplitX>
+        <SplitY>
+          <SplitItem size="80%">
+            <Tabs>
+              <Tab>Parse Tree</Tab>
+              <TabContainer>
+                <div style="height: 100%; overflow: auto">
+                  <Show when={state.tree} fallback={"no tree"}>
+                    <div>(FIXME remove the first 2 nodes)</div>
+                    <Show when={state.tree.rootNode /* tree-sitter */}>
+                      <TreeViewTreeSitter node={state.tree.rootNode} depth={0} />
+                    </Show>
+                    <Show when={state.tree.topNode /* lezer-parser */}>
+                      <TreeViewLezerParser
+                        cursor={(() => {
+                          const cursor = state.tree.cursor(
+                            //IterMode.IncludeAnonymous // this breaks the parse tree rendering
+                          );
+                          // skip topNode, dont show the root "Nix" node in parse tree
+                          // FIXME this breaks for simple sources like "1" or "x"
+                          //cursor.firstChild();
+                          // FIXME this breaks on empty source ""
+                          // -> parse tree shows "x"
+                          // fixed after hot reload ...
+                          return cursor;
+                        })()}
+                        depth={0}
+                        source={state.source} //// TODO setState ??
+                      />
+                    </Show>
+                  </Show>
+                </div>
+              </TabContainer>
+              <Tab>todo</Tab>
+              <TabContainer>todo</TabContainer>
+            </Tabs>
+          </SplitItem>
+          <SplitItem>
+            <Tabs>
+              <Tab>Eval Result</Tab>
+              <TabContainer>
+                <div style="height: 100%; overflow: auto">
+                  <Show when={state.tree} fallback={"no eval"}>
+                    <pre>{JSON.stringify(nixEval.evalTree(state.tree, state.source), null, 2)}</pre>
+                  </Show>
+                </div>
+              </TabContainer>
+              <Tab>todo</Tab>
+              <TabContainer>todo</TabContainer>
+            </Tabs>
+          </SplitItem>
+        </SplitY>
         <SplitItem>
-          <Tabs>
-            <Tab>tree</Tab>
-            <TabContainer>
-              <div style="height: 100%; overflow: auto">
-                <Show when={state.tree && state.tree.rootNode} fallback={"no tree"}>
-                  <TreeView node={state.tree.rootNode} depth={0} />
-                </Show>
-              </div>
-            </TabContainer>
-
-            <Tab>todo</Tab>
-            <TabContainer>todo</TabContainer>
-          </Tabs>
-        </SplitItem>
-        <SplitItem size="80%">
-          <MonacoEditorLezerParser
+          <div>(warning: the evaluator breaks on syntax errors)</div>
+          <MonacoEditor
             options={{
               //url: "http://localhost:3000/foo.js",
               // const model = () => mEditor.getModel(Uri.parse(finalProps.url));
@@ -546,7 +595,16 @@ https://golden-layout.github.io/golden-layout/frameworks/
               //onDocChange: (newValue) => console.dir({ newValue }),
               //isDark: true,
               minimap: { enabled: false },
-              //setTree: (tree) => setState('tree', tree),
+            }}
+            setTree={(tree) => {
+              // FIXME setTree is called too often
+              // after page reload: 4 times instead of 1 time
+              console.log('App: setTree', tree)
+              setState('tree', tree);
+            }}
+            setSource={(source) => {
+              console.log('App: setSource', source)
+              setState('source', source);
             }}
           />
         </SplitItem>
@@ -557,6 +615,7 @@ https://golden-layout.github.io/golden-layout/frameworks/
 
 
         /*
+
         <LayoutItem>
           <MonacoEditorTreeSitter
             options={{
@@ -592,7 +651,7 @@ https://golden-layout.github.io/golden-layout/frameworks/
 
 
 // {props.node.text} <span class="comment"># {props.node.type}</span>
-function TreeView(props) {
+function TreeViewTreeSitter(props) {
   return (
     <Show when={props.node.type != 'comment'}>
       <Show
@@ -609,11 +668,83 @@ function TreeView(props) {
         <div class="branch-node" style="font-family: monospace">
           <Indent depth={props.depth}/> {props.node.type}
           <div>
-            <For each={props.node.children}>{childNode => TreeView({ node: childNode, depth: props.depth + 1 })}</For>
+            <For each={props.node.children}>{childNode => TreeViewTreeSitter({ node: childNode, depth: props.depth + 1 })}</For>
           </div>
         </div>
       </Show>
     </Show>
+  );
+}
+
+
+// FIXME this is called too often
+// after page reload, 31 times instead of 1 time
+// for the nix source: if true then true else false
+// {props.cursor.text} <span class="comment"># {props.cursor.type}</span>
+function TreeViewLezerParser(props) {
+  // tree walker, based on
+  // monaco-lezer-parser/src/highlighter.js
+  // function buildHighlightInfo
+  // https://lezer.codemirror.net/docs/ref/#common.SyntaxNode
+  // TODO When iterating over large amounts of nodes, you may want to use a mutable cursor instead, which is more efficient.
+  console.log('App: TreeViewLezerParser: cursor', props.cursor);
+  // props.cursor.children // tree-sitter
+  //
+  if (!props.cursor) {
+    console.log('App: TreeViewLezerParser: cursor is empty -> return');
+    return;
+  }
+  if (!props.cursor.node) {
+    console.log('App: TreeViewLezerParser: cursor.node is empty -> return');
+    return;
+  }
+  if (!props.source) {
+    console.log('App: TreeViewLezerParser: source is empty -> return');
+    return;
+  }
+  //const cursorType = props.cursor.type;
+  // save the current node data
+  // before calling firstChild/nextSibling/parent on the cursor
+  const cursorText = props.source.slice(props.cursor.from, props.cursor.to);
+  const cursorType = props.cursor.name;
+  console.log('App: TreeViewLezerParser: cursorText', cursorText);
+  // solidjs has ugly conditionals, so here is the control flow:
+  //
+  // if (cursor.goDown()) { // cursor.firstChild()
+  //   show current node
+  //   depth++
+  //   recurse(cursor)
+  // }
+  // else {
+  //   ...
+  // }
+  //
+  // see also: nix-eval-js/src/nix-eval.js
+  return (
+    <div class="branch-node" style="font-family: monospace">
+      <Show
+        when={props.cursor.firstChild()}
+        fallback={<>
+          <Indent depth={props.depth}/>{cursorType}: {cursorText}
+          {/* <span title={"type: " + cursorType}>{cursorText}</span> */}
+          <Show
+            when={props.cursor.nextSibling()}
+            fallback={(
+              // FIXME this breaks for source = "{a}: b" -> b is missing in the parse tree
+              // but works for source = "a: b"
+              props.cursor.parent() && props.cursor.nextSibling() &&
+              TreeViewLezerParser({ cursor: props.cursor, source: props.source, depth: props.depth - 1 })
+            )}
+          >
+            {TreeViewLezerParser({ cursor: props.cursor, source: props.source, depth: props.depth })}
+          </Show>
+        </>}
+      >
+        <Indent depth={props.depth}/>{cursorType}: {cursorText}
+        {/* <span title={cursorText}>{cursorType}</span> */}
+        {TreeViewLezerParser({ cursor: props.cursor, source: props.source, depth: props.depth + 1 })}
+      </Show>
+    </div>
   );
 }
 
