@@ -1,0 +1,3 @@
+[submodule "frontend/src/solid-blocks"]
+	path = frontend/src/solid-blocks
+	url = https://github.com/milahu/solid-blocks
