@@ -24,8 +24,12 @@ edit nixos configuration in a graphical webinterface
 this project is based on
 
 * [lezer-parser-nix](https://github.com/milahu/lezer-parser-nix) - nix parser in javascript
-  * todo: also support [tree-sitter-nix](https://github.com/cstrahan/tree-sitter-nix) for WASM browsers
-* [monaco-lezer-parser](https://github.com/milahu/monaco-lezer-parser) - integration for monaco-editor and monaco-lezer-parser
+* [monaco-lezer-parser](https://github.com/milahu/monaco-lezer-parser) - integration for monaco-editor and lezer-parser
+
+todo: also support [tree-sitter](https://github.com/tree-sitter/tree-sitter) parsers for WASM browsers
+
+* [tree-sitter-nix](https://github.com/cstrahan/tree-sitter-nix) - nix parser in WASM
+* [monaco-tree-sitter](https://github.com/milahu/monaco-tree-sitter) - integration for monaco-editor and tree-sitter
 
 [nixos-patch-installer](https://github.com/milahu/nixos-patch-installer) is an old version of this project, with a focus on connecting [nixpkgs PRs](https://github.com/NixOS/nixpkgs/pulls) and `/etc/nixos`
 
