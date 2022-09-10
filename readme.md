@@ -1,6 +1,8 @@
 # nixos-config-webui
 
-edit nixos config in a graphical webinterface
+web editor for nix files
+
+edit nixos configuration in a graphical webinterface
 
 ## concept
 
