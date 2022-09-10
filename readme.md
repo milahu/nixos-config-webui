@@ -33,6 +33,9 @@ this project is based on
 
 * [lezer-parser-nix](https://github.com/milahu/lezer-parser-nix) - nix parser in javascript
 * [monaco-lezer-parser](https://github.com/milahu/monaco-lezer-parser) - integration for monaco-editor and lezer-parser
+* [nix-eval-js](https://github.com/milahu/nix-eval-js) - nix interpreter in javascript
+* [solidjs-resizable-splitter-component](https://github.com/milahu/solidjs-resizable-splitter-component)
+* [solidjs-monaco-editor-component](https://github.com/milahu/solidjs-monaco-editor-component)
 
 todo: also support [tree-sitter](https://github.com/tree-sitter/tree-sitter) parsers for WASM browsers
 
