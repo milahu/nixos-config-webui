@@ -1,3 +1,6 @@
 [submodule "frontend/src/solid-blocks"]
 	path = frontend/src/solid-blocks
 	url = https://github.com/milahu/solid-blocks
+[submodule "frontend/src/solidjs-resizable-splitter-component"]
+	path = frontend/src/solidjs-resizable-splitter-component
+	url = https://github.com/milahu/solidjs-resizable-splitter-component
