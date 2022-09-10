@@ -4,6 +4,14 @@ web editor for nix files
 
 edit nixos configuration in a graphical webinterface
 
+## status
+
+proof of concept
+
+## todo
+
+* prototype an **incremental** nix evaluator for [rnix-lsp](https://github.com/nix-community/rnix-lsp/issues/41)
+
 ## concept
 
 * use `nix repl` to discover the nixos config schema
