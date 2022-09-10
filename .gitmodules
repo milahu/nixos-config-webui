@@ -7,3 +7,6 @@
 [submodule "frontend/src/solidjs-treeview-component"]
 	path = frontend/src/solidjs-treeview-component
 	url = https://github.com/milahu/solidjs-treeview-component
+[submodule "frontend/src/solidjs-monaco-editor-component"]
+	path = frontend/src/solidjs-monaco-editor-component
+	url = https://github.com/milahu/solidjs-monaco-editor-component
