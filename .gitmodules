@@ -4,3 +4,6 @@
 [submodule "frontend/src/solidjs-resizable-splitter-component"]
 	path = frontend/src/solidjs-resizable-splitter-component
 	url = https://github.com/milahu/solidjs-resizable-splitter-component
+[submodule "frontend/src/solidjs-treeview-component"]
+	path = frontend/src/solidjs-treeview-component
+	url = https://github.com/milahu/solidjs-treeview-component
