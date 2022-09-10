@@ -26,6 +26,8 @@ this project is based on
 * [lezer-parser-nix](https://github.com/milahu/lezer-parser-nix) - pure javascript parser for nix code
 * [monaco-lezer-parser](https://github.com/milahu/monaco-lezer-parser) - integration for monaco-editor and monaco-lezer-parser
 
+[nixos-patch-installer](https://github.com/milahu/nixos-patch-installer) is an old version of this project, with a focus on connecting [nixpkgs PRs](https://github.com/NixOS/nixpkgs/pulls) and `/etc/nixos`
+
 ## similar projects
 
 * https://github.com/nix-gui/nix-gui
