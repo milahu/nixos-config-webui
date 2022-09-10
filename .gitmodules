@@ -10,3 +10,6 @@
 [submodule "frontend/src/solidjs-monaco-editor-component"]
 	path = frontend/src/solidjs-monaco-editor-component
 	url = https://github.com/milahu/solidjs-monaco-editor-component
+[submodule "frontend/src/nix-eval-js"]
+	path = frontend/src/nix-eval-js
+	url = https://github.com/milahu/nix-eval-js
