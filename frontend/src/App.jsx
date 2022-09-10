@@ -94,8 +94,10 @@ export default function App() {
   });
 
   onMount(() => {
-    loadOptions();
-    loadConfig();
+    // TODO restore
+    // load data from backend
+    //loadOptions();
+    //loadConfig();
   });
 
 
