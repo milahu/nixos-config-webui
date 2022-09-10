@@ -22,3 +22,4 @@ edit nixos configuration in a graphical webinterface
 ## similar projects
 
 * https://github.com/nix-gui/nix-gui
+* https://nixos.wiki/wiki/NixOS_configuration_editors
