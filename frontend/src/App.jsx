@@ -9,7 +9,9 @@ import { createStore } from "solid-js/store";
 import { Tab, TabContainer, Tabs } from "./solid-blocks";
 //import { GridResizer } from './solid-blocks/src/splitter.jsx';
 //import { SplitY, SplitX } from './solid-blocks/src/splitter.jsx';
-import { LayoutRow, LayoutColumn, LayoutItem } from './solidjs-splitter-component';
+
+import {SplitRoot, SplitY, SplitX, SplitItem} from './solidjs-resizable-splitter-component'
+
 import { glob as globalStyle } from "solid-styled-components";
 
 
@@ -516,9 +518,9 @@ https://golden-layout.github.io/golden-layout/frameworks/
   const [state, setState] = createStore();
 
   return (
-    <div style="height: 100vh">
-      <LayoutRow>
-        <LayoutItem size="20%">
+    <SplitRoot>
+      <SplitX>
+        <SplitItem>
           <Tabs>
             <Tab>tree</Tab>
             <TabContainer>
@@ -532,26 +534,24 @@ https://golden-layout.github.io/golden-layout/frameworks/
             <Tab>todo</Tab>
             <TabContainer>todo</TabContainer>
           </Tabs>
-        </LayoutItem>
-        <LayoutItem>
+        </SplitItem>
+        <SplitItem size="80%">
           <MonacoEditorLezerParser
             options={{
               //url: "http://localhost:3000/foo.js",
               // const model = () => mEditor.getModel(Uri.parse(finalProps.url));
-              value: store.configText,
-              //value: `if true then true else false`,
+              //value: store.configText,
+              value: `if true then true else false`,
               language: `nix`,
               //onDocChange: (newValue) => console.dir({ newValue }),
               //isDark: true,
-
+              minimap: { enabled: false },
+              //setTree: (tree) => setState('tree', tree),
             }}
-            withMinimap={false}
-            isDark={true}
-            setTree={(tree) => setState('tree', tree)}
           />
-        </LayoutItem>
-      </LayoutRow>
-    </div>
+        </SplitItem>
+      </SplitX>
+    </SplitRoot>
   );
 }
 
