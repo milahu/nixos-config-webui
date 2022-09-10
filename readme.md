@@ -19,6 +19,13 @@ edit nixos configuration in a graphical webinterface
   * text interface
     * [treeview widget in solidjs](https://milahu.github.io/solidjs-treeview-component/)
 
+## related
+
+this project is based on
+
+* [lezer-parser-nix](https://github.com/milahu/lezer-parser-nix) - pure javascript parser for nix code
+* [monaco-lezer-parser](https://github.com/milahu/monaco-lezer-parser) - integration for monaco-editor and monaco-lezer-parser
+
 ## similar projects
 
 * https://github.com/nix-gui/nix-gui
