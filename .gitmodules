@@ -13,3 +13,6 @@
 [submodule "frontend/src/nix-eval-js"]
 	path = frontend/src/nix-eval-js
 	url = https://github.com/milahu/nix-eval-js
+[submodule "frontend/src/solid-codemirror"]
+	path = frontend/src/solid-codemirror
+	url = https://github.com/nimeshnayaju/solid-codemirror
