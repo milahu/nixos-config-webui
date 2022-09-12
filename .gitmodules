@@ -16,3 +16,6 @@
 [submodule "frontend/src/solid-codemirror"]
 	path = frontend/src/solid-codemirror
 	url = https://github.com/nimeshnayaju/solid-codemirror
+[submodule "frontend/src/codemirror-lang-nix"]
+	path = frontend/src/codemirror-lang-nix
+	url = https://github.com/milahu/codemirror-lang-nix
